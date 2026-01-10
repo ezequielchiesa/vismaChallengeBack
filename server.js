@@ -1,13 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 
 const createUser = require('./routes/users/creatrUser');
+const { testConnection } = require('./dbConn/connection');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  // origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173', 'http://localhost:4200'],
   origin: ['http://localhost:5173'],
   credentials: true
 }));
@@ -34,8 +35,9 @@ app.post('/users', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  await testConnection(); // Testear conexión al iniciar
 });
 
 module.exports = app;

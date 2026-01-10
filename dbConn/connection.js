@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -27,4 +27,22 @@ async function testConnection() {
   }
 }
 
-module.exports = { pool, testConnection };
+// Función reutilizable para ejecutar queries
+async function executeQuery(query, params = []) {
+  try {
+    const [results] = await pool.execute(query, params);
+    return {
+      success: true,
+      data: results
+    };
+  } catch (error) {
+    console.error('❌ Error ejecutando query:', error.message);
+    throw {
+      success: false,
+      error: error.message,
+      code: error.code
+    };
+  }
+}
+
+module.exports = { pool, testConnection, executeQuery };

@@ -3,6 +3,8 @@ const cors = require('cors');
 require('dotenv').config({ quiet: true });
 
 const createUser = require('./routes/users/createUser');
+const getUsers = require('./routes/users/getUsers');
+const createTask = require('./routes/task/createTast');
 const { testConnection } = require('./dbConn/connection');
 
 const app = express();
@@ -28,6 +30,28 @@ app.get('/', (req, res) => {
 app.post('/users', (req, res) => {
   try {
     createUser(req.body, res);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// GET / getUsers - Obtener lista usuarios
+app.get('/getUsers', (req, res) => {
+  try {
+    getUsers(req.body, res);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// POST / task - Crear tarea
+app.post('/task', (req, res) => {
+  try {
+    createTask(req.body, res);
   } catch (error) {
     res.status(500).json({
       error: 'Internal server error'

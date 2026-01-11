@@ -14,7 +14,7 @@ async function createTask(taskData, res) {
 
         const query = `
             INSERT INTO tasks (title, description, assigned_user_id, status, created_at)
-            VALUES (?, ?, ?, TRUE, NOW());
+            VALUES (?, ?, ?, FALSE, NOW());
         `;
         const params = [titulo, descripcion, usuario];
 

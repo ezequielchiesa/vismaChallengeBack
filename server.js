@@ -6,6 +6,7 @@ const createUser = require('./routes/users/createUser');
 const getUsers = require('./routes/users/getUsers');
 const createTask = require('./routes/task/createTast');
 const getTasks = require('./routes/task/getTasks');
+const completeTask = require('./routes/task/complete');
 const { testConnection } = require('./dbConn/connection');
 
 const app = express();
@@ -64,6 +65,17 @@ app.post('/task', (req, res) => {
 app.get('/getTasks', (req, res) => {
   try {
     getTasks(req.body, res);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// PUT /tasks/:id/complete - Marcar tarea como completa
+app.put('/tasks/:id/complete', (req, res) => {
+  try {
+    completeTask(req.params.id, res);
   } catch (error) {
     res.status(500).json({
       error: 'Internal server error'
